@@ -47,6 +47,10 @@ module.exports = defineConfig({
             is_default: true,
             options: {
               redisUrl: process.env.LOCKING_REDIS_URL,
+              // Optional: Customize retry behavior
+              // defaultRetryInterval: 20, // milliseconds
+              // maximumRetryInterval: 1000, // milliseconds
+              // backoffFactor: 2, // exponential backoff multiplier
             },
           },
         ],
@@ -180,7 +184,7 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
       </Table.Cell>
       <Table.Cell>
       
-      A number indicating the time (in milliseconds) to wait before retrying to acquire a lock.
+      A number indicating the initial time (in milliseconds) to wait before retrying to acquire a lock. Used as the base delay for exponential backoff retries.
       
       </Table.Cell>
       <Table.Cell>
@@ -190,7 +194,7 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
       </Table.Cell>
       <Table.Cell>
       
-      `5`
+      `20`
       
       </Table.Cell>
     </Table.Row>
@@ -202,7 +206,7 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
       </Table.Cell>
       <Table.Cell>
       
-      A number indicating the maximum time (in milliseconds) to wait before retrying to acquire a lock.
+      A number indicating the maximum time (in milliseconds) to wait before retrying to acquire a lock during exponential backoff.
       
       </Table.Cell>
       <Table.Cell>
@@ -212,7 +216,29 @@ The default Redis URL in a local environment is `redis://localhost:6379`.
       </Table.Cell>
       <Table.Cell>
       
-      `200`
+      `1000`
+      
+      </Table.Cell>
+    </Table.Row>
+    <Table.Row>
+      <Table.Cell>
+      
+      `backoffFactor`
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      A number indicating the multiplier used for exponential backoff when retrying to acquire a lock. Each retry delay is multiplied by this factor until reaching `maximumRetryInterval`.
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      No
+      
+      </Table.Cell>
+      <Table.Cell>
+      
+      `2`
       
       </Table.Cell>
     </Table.Row>
